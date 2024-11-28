@@ -8,3 +8,10 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
+
+:root{
+  --off-white : #eeeeee;
+  --bg-main : #f0e3d3;
+  --text-main : #9B7E5B;
+  --btn-main : #DBBB96;
+}
