@@ -7,6 +7,7 @@ let listeDesNoms = []
 
 
 listeNoms.addEventListener('input', ajouterNomAListe)
+
 // Récupère les noms donnés dans la div listeNom et l'ajoute a la liste listeDesNoms
 function ajouterNomAListe(){
     listeDesNoms = []
@@ -18,10 +19,11 @@ function ajouterNomAListe(){
 
 
 shuffleButton.addEventListener("click", handleClickShuffle)
+
 // Quand on clique sur le bouton shuffle, randomise la liste et l'ajoute quelquepart
 function handleClickShuffle() {
-    
-    showList(shuffleArray(listeDesNoms), listShuffled)
+    const listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
+    showList(shuffleArray(listeSansVide), listShuffled)
 }
 
 
@@ -56,6 +58,11 @@ function showList(array, placeToAdd) {
         placeToAdd.appendChild(newDiv)
         
     });1
-    
+
 }
 
+
+// Check l'array entier et enlève les élements vides
+function removeEmptyElementsFromArray(array) {
+    return array.filter(n=>n)
+}
