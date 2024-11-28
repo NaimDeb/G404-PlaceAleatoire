@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
     font-family: Arial, sans-serif;
 	margin: 0;
-=======
+}
+
 *{
->>>>>>> 09619d1357438b2ff2ecf168d2b33adf16ef93d2
     padding: 0;
     margin: 0;
     box-sizing: border-box;
