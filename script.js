@@ -2,18 +2,21 @@
 const inputAjoutNom = document.querySelector(".inputAjoutNom")
 const btnAjoutNom = document.querySelector(".btnAjoutNom")
 const listeNoms = document.querySelector(".listeNom ul")
+const ajouterNomForm = document.querySelector(".ajoutNom")
 
-
-btnAjoutNom.addEventListener('click', ajouterNomAListe)
+ajouterNomForm.addEventListener('submit', ajouterNomAListe)
 
 function ajouterNomAListe(){
 
-    let liNom = document.createElement('li');
+    console.log("AAA");
 
+    let liNom = document.createElement('li');
     liNom.textContent = inputAjoutNom.value
 
     listeNoms.appendChild(liNom)
 
     inputAjoutNom.value = ''
+
+    event.preventDefault()
     
 }

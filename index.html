@@ -4,21 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PlaceTournante</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="script.js" defer></script>
-</head>
+  </head>
+  
 <body>
 
-<div class="flex" class="ajoutNom">
-    <input type="text" class="inputAjoutNom"  placeholder="Ajoutez un nom a la liste"></input>
-    <button class="btnAjoutNom">+</button>
-</div>
+    <form class="ajoutNom flex">
+        <label for="inputAjoutNom">Ajoutez le nom des élèves</label>
+        <input type="text" class="inputAjoutNom border-black border-2 h-32"  placeholder="Ajoutez un nom a la liste"></input>
+        <button  type="submit" class="btnAjoutNom bg-slate-400 p-4">Ajouter</button>
+    </form>
 
-<div class="listeNom">
-    <ul>
-        
-    </ul>
-</div>
+    <div class="listeNom">
+        <ul>
+            
+        </ul>
+    </div>
+
+    <div class="w-16 h-16 border-red border-2" contenteditable="true" role="textbox"></div>
 
 </body>
 </html>
