@@ -1,22 +1,48 @@
 
-const inputAjoutNom = document.querySelector(".inputAjoutNom")
-const btnAjoutNom = document.querySelector(".btnAjoutNom")
-const listeNoms = document.querySelector(".listeNom ul")
-const ajouterNomForm = document.querySelector(".ajoutNom")
+const shuffleButton = document.querySelector(".shuffleButton")
+const listeNoms = document.querySelector(".listeNoms")
+const listShuffled = document.querySelector(".listShuffled")
 
-ajouterNomForm.addEventListener('submit', ajouterNomAListe)
+let listeDesNoms = []
 
+listeNoms.addEventListener('input', ajouterNomAListe)
+
+// Récupère les noms donnés dans la div listeNom et l'ajoute a la liste listeDesNoms
 function ajouterNomAListe(){
+    listeDesNoms = []
 
-    console.log("AAA");
+    listeNoms.querySelectorAll("div").forEach((nom) => {
+        listeDesNoms.push(nom.textContent) 
+    })
+console.log(listeDesNoms);
 
-    let liNom = document.createElement('li');
-    liNom.textContent = inputAjoutNom.value
-
-    listeNoms.appendChild(liNom)
-
-    inputAjoutNom.value = ''
-
-    event.preventDefault()
-    
 }
+
+
+shuffleButton.addEventListener("click", handleClickShuffle)
+
+function handleClickShuffle() {
+    shuffleArray(listeDesNoms)
+}
+
+
+// Methode Fisher Yates
+function shuffleArray(array) {
+
+    console.log("Shuffling...");
+    
+
+    for (let i = array.length-1 ; i> 0 ; i--) {
+        const j = Math.floor( Math.random() * (i+1) )
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+
+    }
+
+    console.log(array);
+    
+
+}
+
+console.log(listeDesNoms);
