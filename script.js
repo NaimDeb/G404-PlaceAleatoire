@@ -5,7 +5,7 @@ const carnet = document.querySelector(".carnet")
 
 const carnetValeurs = carnet.getBoundingClientRect()
 
-
+let currentMovingDiv
 
 const offset = [-30,-20]
 
@@ -25,6 +25,7 @@ function handleAddChair() {
 
     // Ajoute la chaise dans la div carnet
     carnet.appendChild(newChair)
+
 
 }
 
@@ -56,9 +57,9 @@ function handleDeleteOnRClick(event) {
 // Moves when holding move button
 function handleMove(event) {
     console.log("Moving");
-
-    event.target.addEventListener("mousemove", handleMouseMove)
-    event.target.addEventListener("mouseup", handleRemoveMove)
+    currentMovingDiv = event.target
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUpRemoveMove)
 
 }
 
@@ -69,8 +70,8 @@ function handleMouseMove(event) {
 
     console.log(event);
 
-    event.target.style.left = `${event.clientX - carnetValeurs.x + offset[0]}px`
-    event.target.style.top = `${event.clientY - carnetValeurs.y + offset[1]}px`
+    currentMovingDiv.style.left = `${event.clientX - carnetValeurs.x + offset[0]}px`
+    currentMovingDiv.style.top = `${event.clientY - carnetValeurs.y + offset[1]}px`
     
     
 }
@@ -78,7 +79,7 @@ function handleMouseMove(event) {
 
 
 
-function handleRemoveMove(event) {
-    event.target.removeEventListener("mousemove", handleMouseMove)
-    event.target.removeEventListener("mouseup", handleRemoveMove)
+function handleMouseUpRemoveMove() {
+    document.removeEventListener("mousemove", handleMouseMove) 
+    document.removeEventListener("mouseup", handleMouseUpRemoveMove)
 }
