@@ -3,6 +3,12 @@ const btnAddTable = document.querySelector(".btnAddTable")
 const btnAddChair = document.querySelector(".btnAddChair")
 const carnet = document.querySelector(".carnet")
 
+const carnetValeurs = carnet.getBoundingClientRect()
+
+
+
+const offset = [-30,-20]
+
 
 btnAddTable.addEventListener("click", handleAddTable)
 btnAddChair.addEventListener("click", handleAddChair)
@@ -52,13 +58,27 @@ function handleMove(event) {
     console.log("Moving");
 
     event.target.addEventListener("mousemove", handleMouseMove)
+    event.target.addEventListener("mouseup", handleRemoveMove)
 
 }
 
 function handleMouseMove(event) {
     console.log("ca marche");
-    console.log(mouse.x);
-    console.log(mouse.y);
+    console.log(event.clientX);
+    console.log(event.clientY);
 
+    console.log(event);
+
+    event.target.style.left = `${event.clientX - carnetValeurs.x + offset[0]}px`
+    event.target.style.top = `${event.clientY - carnetValeurs.y + offset[1]}px`
     
+    
+}
+
+
+
+
+function handleRemoveMove(event) {
+    event.target.removeEventListener("mousemove", handleMouseMove)
+    event.target.removeEventListener("mouseup", handleRemoveMove)
 }
