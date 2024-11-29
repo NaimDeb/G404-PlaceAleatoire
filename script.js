@@ -63,15 +63,64 @@ function handleMove(event) {
 
 }
 
+
+// Quand on bouge la souris
 function handleMouseMove(event) {
-    console.log("ca marche");
-    console.log(event.clientX);
-    console.log(event.clientY);
+    // console.log("ca marche");
+    // console.log(event.clientX);
+    // console.log(event.clientY);
 
-    console.log(event);
+    // console.log(event);
 
-    currentMovingDiv.style.left = `${event.clientX - carnetValeurs.x + offset[0]}px`
-    currentMovingDiv.style.top = `${event.clientY - carnetValeurs.y + offset[1]}px`
+
+    let posMouseX = event.clientX - carnetValeurs.x
+    let posMouseY = event.clientY - carnetValeurs.y
+
+
+    currentMovingDiv.style.left = `${posMouseX + offset[0]}px`
+    currentMovingDiv.style.top = `${posMouseY + offset[1]}px`
+
+    let currentDivSize = currentMovingDiv.getBoundingClientRect()
+
+    // Preventing from div to go out of bounds
+
+    // console.log("event client X " +(posMouseX));
+    // console.log("carnet valeurs X : " + carnetValeurs.width );
+    
+    // console.log(event);
+    // console.log(currentDivSize);
+    // console.log(currentDivSize.width);
+    
+
+
+    // OOB Droite
+    if ((posMouseX) > (carnetValeurs.width - (currentDivSize.width/2))) {
+        currentMovingDiv.style.left = `${carnetValeurs.width - (currentDivSize.width)}px`
+    }
+
+    // OOB Gauche
+    if ((posMouseX - (currentDivSize.width/2)) < 0) {
+        currentMovingDiv.style.left = `${0}px`
+    }
+
+    // OOB bas
+    if (posMouseY > (carnetValeurs.height - (currentDivSize.height/2)) ) {
+        currentMovingDiv.style.top = `${carnetValeurs.height - (currentDivSize.height)}px`
+    }
+
+    // OOB Haut
+    if ((posMouseY - (currentDivSize.height/2)) < 0) {
+        currentMovingDiv.style.top = `${0}px`
+    }
+
+
+
+    // switch (event.clientX) {
+    //     case event.clientX > carnetValeurs.width:
+    //         console.log("AAAAA");
+    //         break;
+            
+    // }
     
     
 }
