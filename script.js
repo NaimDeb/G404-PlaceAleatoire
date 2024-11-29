@@ -1,4 +1,7 @@
 
+// Jte vois mohand fais attention a toi
+
+
 const btnAddTable = document.querySelector(".btnAddTable")
 const btnAddChair = document.querySelector(".btnAddChair")
 const carnet = document.querySelector(".carnet")
