@@ -12,6 +12,8 @@ const carnetValeurs = carnet.getBoundingClientRect()
 
 // initialisation vide pour stocker getBoundingClientRect de la div sélectionné
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize
+let lastTableWidth = 128
+let lastTableHeight = 64
 
 // Offset x et Y pour bouger les divs en fonction de la souris
 const offset = [-30,-20]
@@ -28,9 +30,9 @@ function handleClickAddChair() {
     
     // Crée la chaise avec classe prédéfinies
     const newChair = document.createElement("div")
-    newChair.classList = "chair absolute w-16 h-16 border-black border-2 rounded-full"
+    newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full`
 
-    newChair.addEventListener("mousedown", handleMove)
+    newChair.addEventListener("mousedown", handleInitMove)
     newChair.addEventListener("contextmenu", handleDeleteOnRClick)
 
     // Ajoute la chaise dans la div carnet
@@ -43,7 +45,7 @@ function handleClickAddTable() {
     console.log("added table");
 
     const newTable = document.createElement("div")
-    newTable.classList = "table absolute w-32 h-16 border-black border-2"
+    newTable.classList = `table absolute w-[${lastTableWidth}px] h-[${lastTableHeight}px] border-black border-2`
 
     newTable.addEventListener("mousedown", handleInitMove)
     newTable.addEventListener("contextmenu", handleDeleteOnRClick)
@@ -69,20 +71,23 @@ function handleClickAddTable() {
 
 // REsize la table en fonction de la souris
 function handleDragging(event){
+
+    let changedWidth = (startWidth + event.clientX - startX) 
+    let changedHeight = (startHeight + event.clientY - startY) 
     
-    currentResize.style.width = (startWidth + event.clientX - startX) + "px"
-    currentResize.style.height = (startHeight + event.clientY - startY) + 'px';
+    currentResize.style.width = changedWidth + "px"
+    currentResize.style.height = changedHeight + "px"
+
+
+    lastTableWidth = changedWidth
+    lastTableHeight = changedHeight
+    
 
 }
 
 
 
-// Deletes div when right clicked
-function handleDeleteOnRClick(event) {
-    console.log("Deleted");
-    console.log(event);
-    event.target.remove()
-}
+
 
 // Initialise le resize en gardant la taille du parent de resize aka la table
 function handleInitResize(event) {
@@ -97,8 +102,11 @@ function handleInitResize(event) {
     startHeight = currentMovingDiv.height
     
     document.addEventListener("mousemove", handleDragging, false)
-    document.addEventListener("mouseup", handleStopDragging, false)
+    document.addEventListener("mouseup", handleMouseUpRemoveMove, false)
 }
+
+
+
 
 // Sélectionne la div qu'on prend et initialise les event listener pour la bouger
 function handleInitMove(event) {
@@ -111,9 +119,9 @@ function handleInitMove(event) {
         
     document.addEventListener("mousemove", handleMouseMove)
     document.addEventListener("mouseup", handleMouseUpRemoveMove)
+
 };
 }
-
 
 // Quand on bouge la souris, bouge la div, en essayant de ne pas sortir de la div carnet
 function handleMouseMove(event) {
@@ -169,17 +177,18 @@ function handleMouseMove(event) {
 }
 
 
+// Deletes div when right clicked
+function handleDeleteOnRClick(event) {
+
+    if(!event.target.classList.contains("resizer")) { ;
+    console.log(event);
+    event.target.remove()
+    }
+}
 
 // Retire les EventListener lorsqu'on arrête de rester appuyer sur la souris
 function handleMouseUpRemoveMove() {
     document.removeEventListener("mousemove", handleMouseMove) 
     document.removeEventListener("mouseup", handleMouseUpRemoveMove)
-}
-
-// Stop le dragging quand mouseUp (TODO : peut-être l'ajouter au remove mouse)
-function handleStopDragging(event){
-        document.removeEventListener("mousemove", handleDragging, false)
-        document.removeEventListener("mouseup", handleStopDragging, false)
-        
-        
+    document.removeEventListener("mousemove", handleDragging, false)
 }
