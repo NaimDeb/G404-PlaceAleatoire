@@ -17,15 +17,15 @@
         rel="stylesheet">
 </head>
 
-<body class="bg-[#f0e3d3]">
+<body class="bg-[--bg-main]">
     <header id="navbar">
-        <nav class="bg-[#dbbb96] px-12 py-3 flex justify-between drop-shadow-lg border-b-[1px] border-[#f0e3d3]">
-            <h2 class="ml-4 text-2xl text-[#eeeeee]">LeGrandEmplacement</h2>
+        <nav class="bg-[--btn-main] px-12 py-3 flex justify-between drop-shadow-lg border-b-[1px] border-[--bg-main]">
+            <h2 class="ml-4 text-2xl text-[--off-white]">LeGrandEmplacement</h2>
             <img src="./img/parametres-cog.png" alt="Roue des paramètres" class="w-8">
         </nav>
     </header>
     <!-- <section id="modal" class="bg-black w-[100vw] h-[100vh] bg-opacity-30 flex justify-center items-center">
-        <div class="bg-[#f0e3d3] w-[800px] h-[800px] absolute z-0 flex justify-center">
+        <div class="bg-[--bg-main] w-[800px] h-[800px] absolute z-0 flex justify-center">
             <img src="img/Intercalaires.png" alt="Intercalaires" class="absolute top-[-20px]">
             <div class="self-start mt-32">
                 <h1 class="text-3xl justify-self-center ">Bienvenue au Grand Emplacement</h1>
@@ -38,21 +38,32 @@
                     <li class="mt-12">Tu laisse la magie opérer</li>
                 </ul>
                 <button id="start"
-                    class="flex justify-self-center mt-12 bg-[#DBBB96] rounded-3xl text-3xl text-[#f0e3d3] px-4 py-4">Commencer</button>
+                    class="flex justify-self-center mt-12 bg-[--btn-main] rounded-3xl text-3xl text-[--bg-main] px-4 py-4">Commencer</button>
             </div>
         </div>
     </section> -->
     <section id="fullPage" class=" w-[100vw] h-[94vh] flex justify-center items-center">
-        <div id="carnet" class="bg-[#eeeeee] w-[800px] h-[800px] absolute z-1 flex justify-center">
+        <div id="carnet" class="bg-[--off-white] w-[800px] h-[800px] absolute z-1 flex justify-center">
             <img src="img/Intercalaires.png" alt="Intercalaires" class="absolute top-[-20px]">
         </div>
         <div class="w-full flex justify-end px-32 items-start h-full">
             <div id="bookMark"
-                class="relative h-[750px] w-[50px] p-0 border-l-[150px] border-solid border-r-[150px] border-[#dbbb96] border-b-[100px] border-b-transparent items-center justify-start flex flex-col">
+                class="relative h-[750px] w-[50px] p-0 border-l-[150px] border-solid border-r-[150px] border-[--btn-main] border-b-[100px] border-b-transparent items-center justify-start flex flex-col text-[--off-white]">
                 <h2 class="text-3xl mt-5">Elèves</h2>
 
-                <div class="listeNoms w-[150px] h-[300px] border-[#f0e3d3] border-2 focus:outline-none" contenteditable="true" role="textbox" spellcheck="false">
+                <div class="listeNoms mt-6 w-[150px] h-[300px] border-[--bg-main] border-2 focus:outline-none"
+                    contenteditable="true" role="textbox" spellcheck="false">
                 </div>
+                <div id="nbrTables" class="flex items-center w-[210px] justify-center mt-12 gap-2">
+                    <p class="w-full text-xl">Nombre de Tables</p>
+                    <img src="./img/plus.png" alt="bouton moins" class="w-[30px] h-[30px] flex-row">
+                </div>
+                <div class="count w-[40px] h-[40px] border-2"></div>
+                <div id="nbrChaises" class="flex items-center w-[210px] justify-center mt-12">
+                    <p class="w-full text-xl">Nombre de Chaises</p>
+                    <img src="./img/plus.png" alt="bouton moins" class="w-[30px] h-[30px]">
+                </div>
+                <div class="count w-[40px] h-[40px] border-2"></div>
             </div>
         </div>
     </section>
