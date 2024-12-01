@@ -1,4 +1,4 @@
-// Partie animation
+// ....................................... PARTIE ANIMATION .......................................
 
 const start = document.querySelector("#start");
 const modal = document.querySelector("#modal");
@@ -11,16 +11,19 @@ const chairPlus = document.querySelector(".chairPlus");
 const tableCount = document.querySelector("#tableCount");
 const chairCount = document.querySelector("#chairCount");
 
+
+
 start.addEventListener("click", handleModalClose);
 bookMark.addEventListener("click", handleBookMarkOpen);
-tablePlus.addEventListener("click", handleCountPlus);
-chairPlus.addEventListener("click", handleCountPlus);
+// tablePlus.addEventListener("click", handleCountPlus);
+// chairPlus.addEventListener("click", handleCountPlus);
 
 function handleModalClose(event) {
   fullPage.classList.remove("hidden");
   fullPage.classList.add("flex");
   modal.classList.remove("flex");
   modal.classList.add("hidden");
+  carnetValeurs = carnet.getBoundingClientRect();
 }
 
 function handleBookMarkOpen(event) {
@@ -41,7 +44,7 @@ function handleCountPlus(event) {
   }
 }
 
-// Partie Liste Random
+//  ....................................... PARTIE LISTE RANDOM .......................................
 
 
 // Jte vois mohand fais attention a toi
@@ -49,17 +52,15 @@ function handleCountPlus(event) {
 
 const btnAddTable = document.querySelector(".btnAddTable")
 const btnAddChair = document.querySelector(".btnAddChair")
-const carnet = document.querySelector(".carnet")
-
+const carnet = document.querySelector("#carnet")
 
 // Pour garder la width et height du carnet
-const carnetValeurs = carnet.getBoundingClientRect()
+let carnetValeurs
 
 // initialisation vide pour stocker getBoundingClientRect de la div sélectionné
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize
 let lastTableWidth = 128
 let lastTableHeight = 64
-
 // Offset x et Y pour bouger les divs en fonction de la souris
 const offset = [-30,-20]
 
@@ -69,13 +70,12 @@ btnAddChair.addEventListener("click", handleClickAddChair)
 
 
 // Click functions to add corresponding divs 
-
 function handleClickAddChair() {
     console.log("added chair");
     
     // Crée la chaise avec classe prédéfinies
     const newChair = document.createElement("div")
-    newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full`
+    newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px]`
 
     newChair.addEventListener("mousedown", handleInitMove)
     newChair.addEventListener("contextmenu", handleDeleteOnRClick)
@@ -90,7 +90,7 @@ function handleClickAddTable() {
     console.log("added table");
 
     const newTable = document.createElement("div")
-    newTable.classList = `table absolute w-[${lastTableWidth}px] h-[${lastTableHeight}px] border-black border-2`
+    newTable.classList = `table absolute w-[${lastTableWidth}px] h-[${lastTableHeight}px] border-black border-2 top-[100px]`
 
     newTable.addEventListener("mousedown", handleInitMove)
     newTable.addEventListener("contextmenu", handleDeleteOnRClick)
@@ -112,7 +112,7 @@ function handleClickAddTable() {
 
 }
 
-
+// Resizing tables
 
 // REsize la table en fonction de la souris
 function handleDragging(event){
@@ -129,11 +129,6 @@ function handleDragging(event){
     
 
 }
-
-
-
-
-
 // Initialise le resize en gardant la taille du parent de resize aka la table
 function handleInitResize(event) {
     startX = event.clientX
@@ -150,17 +145,14 @@ function handleInitResize(event) {
     document.addEventListener("mouseup", handleMouseUpRemoveMove, false)
 }
 
-
-
-
 // Sélectionne la div qu'on prend et initialise les event listener pour la bouger
 function handleInitMove(event) {
-    console.log("Moving");
+    // console.log("Moving");
     currentMovingDiv = event.target
 
     
     if (!currentMovingDiv.classList.contains("resizer")){
-        console.log("Pas un resizer");
+        // console.log("Pas un resizer");
         
     document.addEventListener("mousemove", handleMouseMove)
     document.addEventListener("mouseup", handleMouseUpRemoveMove)
@@ -192,9 +184,8 @@ function handleMouseMove(event) {
    currentMovingDiv.style.left = `${(posMouseX + offset[0])}px`
    currentMovingDiv.style.top = `${posMouseY + offset[1]}px`
    
+   
    let currentDivSize = currentMovingDiv.getBoundingClientRect()
-   
-   
    
    
    // Preventing div from going out of bounds
@@ -202,21 +193,29 @@ function handleMouseMove(event) {
    // OOB Droite
    if ((posMouseX) > (carnetValeurs.width - (currentDivSize.width/2))) {
        currentMovingDiv.style.left = `${carnetValeurs.width - (currentDivSize.width)}px`
+    //    console.log("oob");
+       
     }
     
     // OOB Gauche
     if ((posMouseX - (currentDivSize.width/2)) < 0) {
         currentMovingDiv.style.left = `${0}px`
+    //    console.log("oob");
+
     }
     
     // OOB bas
     if (posMouseY > (carnetValeurs.height - (currentDivSize.height/2)) ) {
         currentMovingDiv.style.top = `${carnetValeurs.height - (currentDivSize.height)}px`
+    //    console.log("oob");
+
     }
     
     // OOB Haut
     if ((posMouseY - (currentDivSize.height/2)) < 0) {
         currentMovingDiv.style.top = `${0}px`
+    //    console.log("oob");
+
     }
     
 }
@@ -229,6 +228,8 @@ function handleDeleteOnRClick(event) {
     console.log(event);
     event.target.remove()
     }
+
+    return false;
 }
 
 // Retire les EventListener lorsqu'on arrête de rester appuyer sur la souris
@@ -237,3 +238,6 @@ function handleMouseUpRemoveMove() {
     document.removeEventListener("mouseup", handleMouseUpRemoveMove)
     document.removeEventListener("mousemove", handleDragging, false)
 }
+
+
+// ....................................... PARTIE LISTE RANDOM .......................................

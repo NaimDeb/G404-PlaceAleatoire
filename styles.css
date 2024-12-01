@@ -10,7 +10,10 @@ body {
   box-sizing: border-box;
   
   font-family: Lacquer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 :root {
   --off-white: #eeeeee;
