@@ -440,16 +440,25 @@ function savePositions() {
     const allChairs = Array.from(document.querySelectorAll(".chair"));
     const allTables = Array.from(document.querySelectorAll(".table"));
 
-    const chairData = allChairs.map( chair => {
-        const { left, top, width, height } = chair.style;
-        return {left, top, width, height}
-    })
-
+    const chairData = allChairs.map(chair => {
+        const computedStyle = window.getComputedStyle(chair);
+        return {
+            left: chair.style.left,
+            top: chair.style.top,
+            width: computedStyle.width,
+            height: computedStyle.height,
+        };
+    });
+    
     const tableData = allTables.map(table => {
-        console.log(table.style.width);
-        
-        const { left, top, width, height } = table.style;
-        return { left, top, width, height };
+        const computedStyle = window.getComputedStyle(table);
+        console.log("width : " + computedStyle.width);
+        return {
+            left: table.style.left,
+            top: table.style.top,
+            width: computedStyle.width,
+            height: computedStyle.height,
+        };
     });
 
     window.localStorage.setItem("listeChaises", JSON.stringify(chairData));
