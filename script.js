@@ -242,7 +242,7 @@ function handleMouseUpRemoveMove() {
 
 // ....................................... PARTIE LISTE RANDOM .......................................
 
-const shuffleButton = document.querySelector(".shuffleButton")
+const shuffleButton = document.querySelector("#quickPlace")
 const listeNoms = document.querySelector(".listeNoms")
 const listShuffled = document.querySelector(".listeShuffled")
 
@@ -258,6 +258,8 @@ function ajouterNomAListe(){
     listeNoms.querySelectorAll("div").forEach((nom) => {
         listeDesNoms.push(nom.textContent) 
     })
+    // console.log(listeDesNoms);
+    
 }
 
 
@@ -265,9 +267,13 @@ shuffleButton.addEventListener("click", handleClickShuffle)
 
 // Quand on clique sur le bouton shuffle, randomise la liste et l'ajoute quelquepart
 function handleClickShuffle() {
+    // console.log("click shuffle");
+    
     const listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
     showList(shuffleArray(listeSansVide), listShuffled)
 }
+
+
 
 
 // Methode Fisher Yates
@@ -291,6 +297,7 @@ function shuffleArray(array) {
 }
 
 // Prend une liste array et ajoute chacun de ses trucs dans l'HTML a l'endroit placeToAdd
+// TODO , REMPLACER PAR CREER DIVS POUR CHAQUE BOUTON
 function showList(array, placeToAdd) {
     console.log("Showing list...");
      
@@ -309,3 +316,5 @@ function showList(array, placeToAdd) {
 function removeEmptyElementsFromArray(array) {
     return array.filter(n=>n)
 }
+
+
