@@ -459,8 +459,9 @@ function restorePositions() {
 
     chairData.forEach((data => {
         const newChair = document.createElement("div");
-        newChair.style.backgroundImage = "url(./img/papier.png)";
-        newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full`;
+        newChair.style.backgroundImage = "url(./img/wood.jpg)";
+
+        newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center `;;
         newChair.style.left = data.left;
         newChair.style.top = data.top;
 
