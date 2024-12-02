@@ -40,3 +40,8 @@ body {
   user-select: all;
   -webkit-tap-highlight-color: aliceblue;
 }
+
+.papier{
+  background-image: url(./img/papier.png);
+  color:black
+}

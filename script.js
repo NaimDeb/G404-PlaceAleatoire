@@ -343,7 +343,7 @@ function updateChairCount() {
     let chairCount = document.querySelector("#chairCount")
     console.log("writing");
     
-    chairCount.textContent = `${listeSansVide.length} / ${listeChaise.length}`
+    chairCount.textContent = `${listeSansVide.length} / ${listeChaise.length || "0"}`
 }
 
 // Fonction attribuer noms aux chaises
@@ -367,7 +367,7 @@ function assignNamesToChairs(listeNoms) {
         existingPapiers.forEach(papier => papier.remove());
 
         const nameInChair = document.createElement("p")
-        nameInChair.classList = "papier w-16 h-8 p-2"
+        nameInChair.classList = "papier h-8 p-2 w-fit"
         nameInChair.innerText = listeNoms[index]
         element.appendChild(nameInChair)        
     });
