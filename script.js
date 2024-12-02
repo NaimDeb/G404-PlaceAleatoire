@@ -80,17 +80,15 @@ function handleClickAddChair() {
 
   // Crée la chaise avec classe prédéfinies
   const newChair = document.createElement("div");
-  newChair.style.backgroundImage="url(./img/papier.png)"
-  newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px]`;
+  newChair.style.backgroundImage = "url(./img/wood.jpg)";
+  newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center `;
 
   newChair.addEventListener("mousedown", handleInitMove);
   newChair.addEventListener("contextmenu", handleDeleteOnRClick);
 
-    // Ajoute la chaise dans la div carnet
-    carnet.appendChild(newChair)
-    recalculateChairs()
-
-
+  // Ajoute la chaise dans la div carnet
+  carnet.appendChild(newChair);
+  recalculateChairs();
 }
 // Todo add wa to resize
 function handleClickAddTable() {
@@ -213,15 +211,14 @@ function handleMouseMove(event) {
 
 // Deletes div when right clicked
 function handleDeleteOnRClick(event) {
+  let rightClickedDiv = event.target;
 
-    let rightClickedDiv = event.target
+  if (!rightClickedDiv.classList.contains("resizer")) {
+    rightClickedDiv.remove();
+  }
 
-    if(!rightClickedDiv.classList.contains("resizer")) {
-        rightClickedDiv.remove()
-    }
-    
-    recalculateChairs()
-    return false;
+  recalculateChairs();
+  return false;
 }
 
 // Retire les EventListener lorsqu'on arrête de rester appuyer sur la souris
@@ -233,12 +230,11 @@ function handleMouseUpRemoveMove() {
 
 // ....................................... PARTIE LISTE RANDOM .......................................
 
-const shuffleButton = document.querySelector("#quickPlace")
-const listeNoms = document.querySelector(".listeNoms")
+const shuffleButton = document.querySelector("#quickPlace");
+const listeNoms = document.querySelector(".listeNoms");
 
-let listeDesNoms = []
-let listeSansVide = []
-
+let listeDesNoms = [];
+let listeSansVide = [];
 
 listeNoms.addEventListener("input", ajouterNomAListe);
 
@@ -246,24 +242,23 @@ listeNoms.addEventListener("input", ajouterNomAListe);
 function ajouterNomAListe() {
   listeDesNoms = [];
 
-    listeNoms.querySelectorAll("div").forEach((nom) => {
-        listeDesNoms.push(nom.textContent) 
-    })
-    listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
-    updateChairCount()
-    // console.log(listeDesNoms);
-    
+  listeNoms.querySelectorAll("div").forEach((nom) => {
+    listeDesNoms.push(nom.textContent);
+  });
+  listeSansVide = removeEmptyElementsFromArray(listeDesNoms);
+  updateChairCount();
+  // console.log(listeDesNoms);
 }
 
 shuffleButton.addEventListener("click", handleClickShuffle);
 
 // Quand on clique sur le bouton shuffle, randomise la liste et l'ajoute quelquepart
 function handleClickShuffle() {
-    // console.log("click shuffle");
-    
-    shuffleArray(listeSansVide);
+  // console.log("click shuffle");
 
-    assignNamesToChairs(listeSansVide)
+  shuffleArray(listeSansVide);
+
+  assignNamesToChairs(listeSansVide);
 }
 
 // Methode Fisher Yates
@@ -300,59 +295,56 @@ function removeEmptyElementsFromArray(array) {
   return array.filter((n) => n);
 }
 
-
-let listeChaise = 0
+let listeChaise = 0;
 
 // ....................... FONCTION CALCULER LES CHAISES ..................
 
-
 // Nombre de chaise : _ / X
 function recalculateChairs() {
-
-    listeChaise = document.querySelectorAll(".chair")
-    if (!listeChaise) {listeChaise = 0}
-    // console.log("Nombre de chaises : " + listeChaise.length);
-    updateChairCount()
-    
-
+  listeChaise = document.querySelectorAll(".chair");
+  if (!listeChaise) {
+    listeChaise = 0;
+  }
+  // console.log("Nombre de chaises : " + listeChaise.length);
+  updateChairCount();
 }
 
-
 function updateChairCount() {
-    let chairCount = document.querySelector("#chairCount")
-    console.log("writing");
-    
-    chairCount.textContent = `${listeSansVide.length} / ${listeChaise.length || "0"}`
+  let chairCount = document.querySelector("#chairCount");
+  console.log("writing");
+
+  chairCount.textContent = `${listeSansVide.length} / ${
+    listeChaise.length || "0"
+  }`;
 }
 
 // Fonction attribuer noms aux chaises
 
 function assignNamesToChairs(listeNoms) {
-    
-    // erreurs
-    if(listeSansVide.length > listeChaise.length) {
-        alert("Il y'a plus de noms que de chaises ! rajoute des chaises")
-        return
-    }
-    if(listeSansVide.length < listeChaise.length) {
-        alert("Il y'a plus de chaises que de noms ! rajoute des noms ou enlève des chaises")
-        return
-    }
+  // erreurs
+  if (listeSansVide.length > listeChaise.length) {
+    alert("Il y'a plus de noms que de chaises ! rajoute des chaises");
+    return;
+  }
+  if (listeSansVide.length < listeChaise.length) {
+    alert(
+      "Il y'a plus de chaises que de noms ! rajoute des noms ou enlève des chaises"
+    );
+    return;
+  }
 
-    listeChaise.forEach((element, index) => {
+  listeChaise.forEach((element, index) => {
+    // Enlève les anciens papiers
+    const existingPapiers = element.querySelectorAll(".papier");
+    existingPapiers.forEach((papier) => papier.remove());
 
-        // Enlève les anciens papiers
-        const existingPapiers = element.querySelectorAll(".papier");
-        existingPapiers.forEach(papier => papier.remove());
+    const nameInChair = document.createElement("p");
 
+    nameInChair.classList = "papier h-8 p-2 w-fit";
+    nameInChair.innerText = listeNoms[index];
 
-        const nameInChair = document.createElement("p")
-        nameInChair.classList = "h-8 p-2 w-fit"
-        nameInChair.innerText = listeNoms[index]
-        
-
-
-        element.appendChild(nameInChair)        
-    });
-
+    element.appendChild(nameInChair);
+  });
 }
+
+
