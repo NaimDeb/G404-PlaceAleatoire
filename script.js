@@ -257,9 +257,22 @@ listeNoms.addEventListener("input", ajouterNomAListe);
 function ajouterNomAListe() {
   listeDesNoms = [];
 
+//   Bugfix pour chrome qui met la première ligne de la textarea pas dans une div merci chrome
+// pas trop le temps de comprendre ça pr l'instant
+    listeNoms.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+            // Si le nœud est un texte et non vide, l'ajoute à la liste
+            listeDesNoms.push(node.textContent.trim());
+        }
+    });
+// Mais ca marche
+
+
     listeNoms.querySelectorAll("div").forEach((nom) => {
-        listeDesNoms.push(nom.textContent) 
+        listeDesNoms.push(nom.textContent.trim()) 
     })
+
+
     listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
     updateChairCount()
     // console.log(listeDesNoms);
