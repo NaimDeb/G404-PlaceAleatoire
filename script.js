@@ -12,12 +12,31 @@ const chairPlus = document.querySelector(".chairPlus");
 const tableCount = document.querySelector("#tableCount");
 const chairCount = document.querySelector("#chairCount");
 const box = document.querySelector("#cartonOpen");
+const carnet = document.querySelector("#carnet");
+// Pour garder la width et height du carnet
+let carnetValeurs;
+
+
 
 start.addEventListener("click", handleModalClose);
 bookMark.addEventListener("click", handleBookMarkOpen);
 box.addEventListener("click", handleBoxShaking);
 
-function handleModalClose(event) {
+function handleModalClose(){
+    closeModal()
+    window.localStorage.setItem("firstTime", false)
+}
+
+
+// Test LocalStorage
+let isFirstTime = window.localStorage.getItem("firstTime")
+// console.log(isFirstTime);
+
+if (isFirstTime == "false") { closeModal()}
+
+
+
+function closeModal() {
   fullPage.classList.remove("hidden");
   fullPage.classList.add("flex");
   modal.classList.remove("flex");
@@ -59,10 +78,7 @@ function handleBoxShaking(event) {
 
 const btnAddTable = document.querySelector(".btnAddTable");
 const btnAddChair = document.querySelector(".btnAddChair");
-const carnet = document.querySelector("#carnet");
 
-// Pour garder la width et height du carnet
-let carnetValeurs;
 
 // initialisation vide pour stocker getBoundingClientRect de la div sélectionné
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize;
@@ -261,6 +277,11 @@ function ajouterNomAListe() {
         listeDesNoms.push(nom.textContent) 
     })
     listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
+
+    window.localStorage.setItem("listeNoms", listeNoms.innerHTML)
+    console.log(listeNoms);
+    
+
     updateChairCount()
     // console.log(listeDesNoms);
     
@@ -366,4 +387,19 @@ function assignNamesToChairs(listeNoms) {
         element.appendChild(nameInChair)        
     });
 
+}
+
+
+// ........................ FONCTION LOCALSTORAGE ........................
+initLocalStorage()
+
+
+// fonction qui se lance au démarrage
+async function initLocalStorage() {
+    let listeNomsLS
+    await window.localStorage.getItem("listeNoms")
+    listeNomsLS = window.localStorage.getItem("listeNoms")
+    if (!listeNomsLS) {return}
+    
+    listeNoms.innerHTML = listeNomsLS  
 }
