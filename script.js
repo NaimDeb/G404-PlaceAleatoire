@@ -80,6 +80,7 @@ function handleClickAddChair() {
 
   // Crée la chaise avec classe prédéfinies
   const newChair = document.createElement("div");
+  newChair.style.backgroundImage="url(./img/papier.png)"
   newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px]`;
 
   newChair.addEventListener("mousedown", handleInitMove);
@@ -342,8 +343,11 @@ function assignNamesToChairs(listeNoms) {
         existingPapiers.forEach(papier => papier.remove());
 
         const nameInChair = document.createElement("p")
-        nameInChair.classList = "papier h-8 p-2 w-fit"
+        nameInChair.classList = "h-8 p-2 w-fit"
         nameInChair.innerText = listeNoms[index]
+        
+
+
         element.appendChild(nameInChair)        
     });
 
