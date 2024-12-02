@@ -225,10 +225,12 @@ function handleMouseMove(event) {
 // Deletes div when right clicked
 function handleDeleteOnRClick(event) {
 
-    if(!event.target.classList.contains("resizer")) { ;
-    console.log(event);
-    event.target.remove()
+    let rightClickedDiv = event.target
+
+    if(!rightClickedDiv.classList.contains("resizer")) {
+        rightClickedDiv.remove()
     }
+    
     recalculateChairs()
     return false;
 }
@@ -366,7 +368,7 @@ function assignNamesToChairs(listeNoms) {
         const existingPapiers = element.querySelectorAll(".papier");
         existingPapiers.forEach(papier => papier.remove());
 
-        
+
         const nameInChair = document.createElement("p")
         nameInChair.classList = "papier h-8 p-2 w-fit"
         nameInChair.innerText = listeNoms[index]
