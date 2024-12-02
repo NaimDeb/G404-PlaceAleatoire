@@ -12,12 +12,31 @@ const chairPlus = document.querySelector(".chairPlus");
 const tableCount = document.querySelector("#tableCount");
 const chairCount = document.querySelector("#chairCount");
 const box = document.querySelector("#cartonOpen");
+const carnet = document.querySelector("#carnet");
+// Pour garder la width et height du carnet
+let carnetValeurs;
+
+
 
 start.addEventListener("click", handleModalClose);
 bookMark.addEventListener("click", handleBookMarkOpen);
 box.addEventListener("click", handleBoxShaking);
 
-function handleModalClose(event) {
+function handleModalClose(){
+    closeModal()
+    window.localStorage.setItem("firstTime", false)
+}
+
+
+// Test LocalStorage
+let isFirstTime = window.localStorage.getItem("firstTime")
+// console.log(isFirstTime);
+
+if (isFirstTime == "false") { closeModal()}
+
+
+
+function closeModal() {
   fullPage.classList.remove("hidden");
   fullPage.classList.add("flex");
   modal.classList.remove("flex");
@@ -32,6 +51,8 @@ function handleBookMarkOpen(event) {
   bookMarkContent.classList.add("flex");
   nameChange.classList.add("hidden");
 }
+
+// Plus utilisé ? TODO REMOVE
 let countTable = 0;
 let countChair = 0;
 function handleCountPlus(event) {
@@ -59,10 +80,7 @@ function handleBoxShaking(event) {
 
 const btnAddTable = document.querySelector(".btnAddTable");
 const btnAddChair = document.querySelector(".btnAddChair");
-const carnet = document.querySelector("#carnet");
 
-// Pour garder la width et height du carnet
-let carnetValeurs;
 
 // initialisation vide pour stocker getBoundingClientRect de la div sélectionné
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize;
@@ -76,7 +94,7 @@ btnAddChair.addEventListener("click", handleClickAddChair);
 
 // Click functions to add corresponding divs
 function handleClickAddChair() {
-  console.log("added chair");
+//   console.log("added chair");
 
   // Crée la chaise avec classe prédéfinies
   const newChair = document.createElement("div");
@@ -86,13 +104,14 @@ function handleClickAddChair() {
   newChair.addEventListener("mousedown", handleInitMove);
   newChair.addEventListener("contextmenu", handleDeleteOnRClick);
 
+
   // Ajoute la chaise dans la div carnet
   carnet.appendChild(newChair);
   recalculateChairs();
 }
 // Todo add wa to resize
 function handleClickAddTable() {
-  console.log("added table");
+//   console.log("added table");
 
   const newTable = document.createElement("div");
   newTable.classList = `table absolute w-[${lastTableWidth}px] h-[${lastTableHeight}px] border-black border-2 top-[100px]`;
@@ -110,6 +129,7 @@ function handleClickAddTable() {
   // On utilise le false en 3ème argument pour éviter le bubbling, La table et le resizer ont tous les deux l'écouteur mousedown. En mettant false, si on mousedown le resizer, seulement handleInitResize sera lancé, pas la fonction handleInitMove.
   resizer.addEventListener("mousedown", handleInitResize, false);
 
+
   // Ajoute la table dans la div carnet
   carnet.appendChild(newTable);
 }
@@ -126,6 +146,8 @@ function handleDragging(event) {
 
   lastTableWidth = changedWidth;
   lastTableHeight = changedHeight;
+
+  savePositions();
 }
 // Initialise le resize en gardant la taille du parent de resize aka la table
 function handleInitResize(event) {
@@ -147,7 +169,7 @@ function handleInitMove(event) {
   // console.log("Moving");
   currentMovingDiv = event.target;
   if(currentMovingDiv.classList.contains("papier")) {
-    console.log(currentMovingDiv);
+    // console.log(currentMovingDiv);
     
     currentMovingDiv = currentMovingDiv.parentElement
   }
@@ -212,6 +234,11 @@ function handleMouseMove(event) {
     currentMovingDiv.style.top = `${0}px`;
     //    console.log("oob");
   }
+
+
+
+//   Keep in localstorage
+
 }
 
 // Deletes div when right clicked
@@ -238,6 +265,8 @@ function handleMouseUpRemoveMove() {
   document.removeEventListener("mousemove", handleMouseMove);
   document.removeEventListener("mouseup", handleMouseUpRemoveMove);
   document.removeEventListener("mousemove", handleDragging, false);
+
+  savePositions();
 }
 
 // ....................................... PARTIE LISTE RANDOM .......................................
@@ -271,6 +300,11 @@ function ajouterNomAListe() {
 
 
     listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
+
+    window.localStorage.setItem("listeNoms", listeNoms.innerHTML)
+    // console.log(listeNoms);
+    
+
     updateChairCount()
     // console.log(listeDesNoms);
     
@@ -289,7 +323,7 @@ function handleClickShuffle() {
 
 // Methode Fisher Yates
 function shuffleArray(array) {
-  console.log("Shuffling...");
+//   console.log("Shuffling...");
 
   const newArray = array;
 
@@ -336,12 +370,10 @@ function recalculateChairs() {
 }
 
 function updateChairCount() {
-  let chairCount = document.querySelector("#chairCount");
-  console.log("writing");
-
-  chairCount.textContent = `${listeSansVide.length} / ${
-    listeChaise.length || "0"
-  }`;
+    let chairCount = document.querySelector("#chairCount")
+    // console.log("writing");
+    
+    chairCount.textContent = `${listeSansVide.length} / ${listeChaise.length || "0"}`
 }
 
 // Fonction attribuer noms aux chaises
@@ -364,13 +396,98 @@ function assignNamesToChairs(listeNoms) {
     const existingPapiers = element.querySelectorAll(".papier");
     existingPapiers.forEach((papier) => papier.remove());
 
-    const nameInChair = document.createElement("p");
 
-    nameInChair.classList = "papier papier h-8 p-2 w-fit";
-    nameInChair.innerText = listeNoms[index];
+        const nameInChair = document.createElement("p")
+        nameInChair.classList = "papier h-8 p-2 w-fit"
+        nameInChair.innerText = listeNoms[index]
+        
 
-    element.appendChild(nameInChair);
-  });
+
+        element.appendChild(nameInChair);  
+
+    });
+
 }
 
 
+// ........................ FONCTION LOCALSTORAGE ........................
+initLocalStorage()
+
+
+// fonction qui se lance au démarrage
+async function initLocalStorage() {
+    let listeNomsLS, listeChaisesLS, listeTablesLS
+
+// Pour la liste des noms
+    await window.localStorage.getItem("listeNoms")
+    listeNomsLS = window.localStorage.getItem("listeNoms")
+    if (!listeNomsLS) {return}
+    listeNoms.innerHTML = listeNomsLS  
+    ajouterNomAListe()
+
+// Pour les tables et chaises
+    restorePositions()
+    recalculateChairs()
+
+
+}
+
+
+function savePositions() {
+    const allChairs = Array.from(document.querySelectorAll(".chair"));
+    const allTables = Array.from(document.querySelectorAll(".table"));
+
+    const chairData = allChairs.map( chair => {
+        const { left, top, width, height } = chair.style;
+        return {left, top, width, height}
+    })
+
+    const tableData = allTables.map(table => {
+        const { left, top, width, height } = table.style;
+        return { left, top, width, height };
+    });
+
+    window.localStorage.setItem("listeChaises", JSON.stringify(chairData));
+    window.localStorage.setItem("listeTables", JSON.stringify(tableData));
+}
+
+function restorePositions() {
+    const chairData = JSON.parse(window.localStorage.getItem("listeChaises") || "[]");
+    const tableData = JSON.parse(window.localStorage.getItem("listeTables") || "[]");
+    console.log(chairData);
+    
+
+    chairData.forEach((data => {
+        const newChair = document.createElement("div");
+        newChair.style.backgroundImage = "url(./img/papier.png)";
+        newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full`;
+        newChair.style.left = data.left;
+        newChair.style.top = data.top;
+
+        newChair.addEventListener("mousedown", handleInitMove);
+        newChair.addEventListener("contextmenu", handleDeleteOnRClick);
+
+        carnet.appendChild(newChair);
+    }))
+
+    tableData.forEach(data => {
+        const newTable = document.createElement("div");
+        newTable.classList = `table absolute border-black border-2`;
+        newTable.style.left = data.left;
+        newTable.style.top = data.top;
+        newTable.style.width = data.width;
+        newTable.style.height = data.height;
+
+        newTable.addEventListener("mousedown", handleInitMove);
+        newTable.addEventListener("contextmenu", handleDeleteOnRClick);
+
+        const resizer = document.createElement("div");
+        resizer.classList =
+            "resizer w-[10px] h-[10px] bg-blue-500 absolute right-0 bottom-0";
+
+        resizer.addEventListener("mousedown", handleInitResize, false);
+        newTable.appendChild(resizer);
+
+        carnet.appendChild(newTable);
+    });
+}
