@@ -8,12 +8,13 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  
-  font-family: Lacquer;
+
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-
+nav {
+  font-family: Lacquer;
+}
 
 :root {
   --off-white: #eeeeee;
@@ -36,7 +37,7 @@ body {
   font-style: normal;
 }
 
-.listeNoms{
+.listeNoms {
   user-select: all;
   -webkit-tap-highlight-color: aliceblue;
 }
@@ -52,13 +53,23 @@ body {
 }
 
 #box img:last-child.boxShake {
-  animation: shaking 0.35s infinite;  
- }
- 
- @keyframes shaking {
-   0% { transform: translate(0, 0) rotate(0deg); }
-   25% { transform: translate(5px, 5px) rotate(5deg); }
-   50% { transform: translate(0, 0) rotate(0eg); }
-   75% { transform: translate(-5px, 5px) rotate(-5deg); }
-   100% { transform: translate(0, 0) rotate(0deg); }
- }
+  animation: shaking 0.35s infinite;
+}
+
+@keyframes shaking {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(5px, 5px) rotate(5deg);
+  }
+  50% {
+    transform: translate(0, 0) rotate(0eg);
+  }
+  75% {
+    transform: translate(-5px, 5px) rotate(-5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
