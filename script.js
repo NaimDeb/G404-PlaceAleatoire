@@ -108,6 +108,7 @@ function handleClickAddChair() {
   // Ajoute la chaise dans la div carnet
   carnet.appendChild(newChair);
   recalculateChairs();
+  savePositions()
 }
 // Todo add wa to resize
 function handleClickAddTable() {
@@ -132,6 +133,7 @@ function handleClickAddTable() {
 
   // Ajoute la table dans la div carnet
   carnet.appendChild(newTable);
+  savePositions()
 }
 
 // Resizing tables
@@ -256,6 +258,7 @@ function handleDeleteOnRClick(event) {
     }
     
     recalculateChairs()
+    savePositions()
     event.preventDefault();
     return false;
 }
@@ -443,6 +446,8 @@ function savePositions() {
     })
 
     const tableData = allTables.map(table => {
+        console.log(table.style.width);
+        
         const { left, top, width, height } = table.style;
         return { left, top, width, height };
     });
