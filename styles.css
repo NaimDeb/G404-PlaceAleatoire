@@ -8,9 +8,15 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  
+  font-family: Lacquer;
 
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+img{
+  user-select: none;
 }
 nav {
   font-family: Lacquer;
@@ -37,19 +43,25 @@ nav {
   font-style: normal;
 }
 
-.listeNoms {
-  user-select: all;
-  -webkit-tap-highlight-color: aliceblue;
+.listeNoms{
+  overflow-y: auto;
+  -webkit-tap-highlight-color: blue;
+
+  
 }
 
 .papier{
   background-image: url(./img/papier.png);
-  color:black
+  color:black;
+  user-select: none;
+  
 }
 
 .papier{
   background-image: url(./img/papier.png);
-  color:black
+  color:black;
+  user-select: none;
+  
 }
 
 #box img:last-child.boxShake {
