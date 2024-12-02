@@ -148,6 +148,11 @@ function handleInitResize(event) {
 function handleInitMove(event) {
   // console.log("Moving");
   currentMovingDiv = event.target;
+  if(currentMovingDiv.classList.contains("papier")) {
+    console.log(currentMovingDiv);
+    
+    currentMovingDiv = currentMovingDiv.parentElement
+  }
 
   if (!currentMovingDiv.classList.contains("resizer")) {
     // console.log("Pas un resizer");
@@ -216,11 +221,17 @@ function handleDeleteOnRClick(event) {
 
     let rightClickedDiv = event.target
 
+    if(rightClickedDiv.classList.contains("papier")) {
+        rightClickedDiv = rightClickedDiv.parentElement
+        console.log(rightClickedDiv);
+        
+    }
     if(!rightClickedDiv.classList.contains("resizer")) {
         rightClickedDiv.remove()
     }
     
     recalculateChairs()
+    event.preventDefault();
     return false;
 }
 
@@ -347,7 +358,7 @@ function assignNamesToChairs(listeNoms) {
 
 
         const nameInChair = document.createElement("p")
-        nameInChair.classList = "h-8 p-2 w-fit"
+        nameInChair.classList = "papier h-8 p-2 w-fit"
         nameInChair.innerText = listeNoms[index]
         
 

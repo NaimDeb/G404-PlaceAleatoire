@@ -57,12 +57,6 @@ nav {
   
 }
 
-.papier{
-  background-image: url(./img/papier.png);
-  color:black;
-  user-select: none;
-  
-}
 
 #box img:last-child.boxShake {
   animation: shaking 0.35s infinite;
