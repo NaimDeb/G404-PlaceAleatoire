@@ -366,6 +366,7 @@ function assignNamesToChairs(listeNoms) {
         const existingPapiers = element.querySelectorAll(".papier");
         existingPapiers.forEach(papier => papier.remove());
 
+        
         const nameInChair = document.createElement("p")
         nameInChair.classList = "papier h-8 p-2 w-fit"
         nameInChair.innerText = listeNoms[index]

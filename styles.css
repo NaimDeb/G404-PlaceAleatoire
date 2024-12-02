@@ -10,8 +10,11 @@ body {
   box-sizing: border-box;
   
   font-family: Lacquer;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+img{
+  user-select: none;
 }
 
 
@@ -37,11 +40,15 @@ body {
 }
 
 .listeNoms{
-  user-select: all;
-  -webkit-tap-highlight-color: aliceblue;
+  overflow-y: auto;
+  -webkit-tap-highlight-color: blue;
+
+  
 }
 
 .papier{
   background-image: url(./img/papier.png);
-  color:black
+  color:black;
+  user-select: none;
+  
 }
