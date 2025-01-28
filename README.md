@@ -2,6 +2,8 @@
 
 Ce projet permet de créer une salle de classe et d'ajouter les noms des élèves afin de les placer aléatoirement dans la salle.
 
+Ce projet a été réalise en collaboration avec [Clément C.](https://github.com/gaksss)
+
 ## Fonctionnalités
 - Création d'une salle de classe.
 - Ajout des noms des élèves.
