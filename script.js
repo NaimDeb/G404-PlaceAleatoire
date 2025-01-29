@@ -16,25 +16,22 @@ const carnet = document.querySelector("#carnet");
 // Pour garder la width et height du carnet
 let carnetValeurs;
 
-
-
 start.addEventListener("click", handleModalClose);
 bookMark.addEventListener("click", handleBookMarkOpen);
 box.addEventListener("click", handleBoxShaking);
 
-function handleModalClose(){
-    closeModal()
-    window.localStorage.setItem("firstTime", false)
+function handleModalClose() {
+  closeModal();
+  window.localStorage.setItem("firstTime", false);
 }
 
-
 // Test LocalStorage
-let isFirstTime = window.localStorage.getItem("firstTime")
+let isFirstTime = window.localStorage.getItem("firstTime");
 // console.log(isFirstTime);
 
-if (isFirstTime == "false") { closeModal()}
-
-
+if (isFirstTime == "false") {
+  closeModal();
+}
 
 function closeModal() {
   fullPage.classList.remove("hidden");
@@ -81,33 +78,26 @@ function handleBoxShaking(event) {
 const btnAddTable = document.querySelector(".btnAddTable");
 const btnAddChair = document.querySelector(".btnAddChair");
 
-
 // initialisation vide pour stocker getBoundingClientRect de la div sélectionné
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize;
 let lastTableWidth = 128;
 let lastTableHeight = 64;
-// Offset x et y pour bouger les divs en fonction de la souris
-const DRAG_OFFSET_X = -30;
-const DRAG_OFFSET_Y = -20;
-const offset = [DRAG_OFFSET_X, DRAG_OFFSET_Y];
-
 
 btnAddTable.addEventListener("click", handleClickAddTable);
 btnAddChair.addEventListener("click", handleClickAddChair);
 
 // Click functions to add corresponding divs
 function handleClickAddChair() {
-//   console.log("added chair");
-
+  //   console.log("added chair");
 
   // Ajoute une nouvelle chaise dans la div carnet
   carnet.appendChild(createChair());
   recalculateChairs();
-  savePositions()
+  savePositions();
 }
 // Todo add wa to resize
 function handleClickAddTable() {
-//   console.log("added table");
+  //   console.log("added table");
 
   const newTable = document.createElement("div");
   newTable.classList = `table absolute w-[${lastTableWidth}px] h-[${lastTableHeight}px] border-black border-2 top-[100px]`;
@@ -125,10 +115,9 @@ function handleClickAddTable() {
   // On utilise le false en 3ème argument pour éviter le bubbling, La table et le resizer ont tous les deux l'écouteur mousedown. En mettant false, si on mousedown le resizer, seulement handleInitResize sera lancé, pas la fonction handleInitMove.
   resizer.addEventListener("mousedown", handleInitResize, false);
 
-
   // Ajoute la table dans la div carnet
   carnet.appendChild(newTable);
-  savePositions()
+  savePositions();
 }
 
 // Resizing tables
@@ -163,16 +152,20 @@ function handleInitResize(event) {
 
 // Sélectionne la div qu'on prend et initialise les event listener pour la bouger
 function handleInitMove(event) {
-  // console.log("Moving");
   currentMovingDiv = event.target;
-  if(currentMovingDiv.classList.contains("papier")) {
-    // console.log(currentMovingDiv);
-    
-    currentMovingDiv = currentMovingDiv.parentElement
+  if (currentMovingDiv.classList.contains("papier")) {
+    currentMovingDiv = currentMovingDiv.parentElement;
   }
 
   if (!currentMovingDiv.classList.contains("resizer")) {
-    // console.log("Pas un resizer");
+    // Calculate offset from the mouse position to the div's top-left corner
+    const rect = currentMovingDiv.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const offsetY = event.clientY - rect.top;
+
+    // Store the offsets on the div element
+    currentMovingDiv.dataset.offsetX = offsetX;
+    currentMovingDiv.dataset.offsetY = offsetY;
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUpRemoveMove);
@@ -197,8 +190,12 @@ function handleMouseMove(event) {
 
   // Changer la position de la div
 
-  currentMovingDiv.style.left = `${posMouseX + offset[0]}px`;
-  currentMovingDiv.style.top = `${posMouseY + offset[1]}px`;
+  // Use the stored offsets for positioning
+  const offsetX = parseFloat(currentMovingDiv.dataset.offsetX);
+  const offsetY = parseFloat(currentMovingDiv.dataset.offsetY);
+
+  currentMovingDiv.style.left = `${posMouseX - offsetX}px`;
+  currentMovingDiv.style.top = `${posMouseY - offsetY}px`;
 
   let currentDivSize = currentMovingDiv.getBoundingClientRect();
 
@@ -232,30 +229,25 @@ function handleMouseMove(event) {
     //    console.log("oob");
   }
 
-
-
-//   Keep in localstorage
-
+  //   Keep in localstorage
 }
 
 // Deletes div when right clicked
 function handleDeleteOnRClick(event) {
+  let rightClickedDiv = event.target;
 
-    let rightClickedDiv = event.target
+  if (rightClickedDiv.classList.contains("papier")) {
+    rightClickedDiv = rightClickedDiv.parentElement;
+    // console.log(rightClickedDiv);
+  }
+  if (!rightClickedDiv.classList.contains("resizer")) {
+    rightClickedDiv.remove();
+  }
 
-    if(rightClickedDiv.classList.contains("papier")) {
-        rightClickedDiv = rightClickedDiv.parentElement
-        // console.log(rightClickedDiv);
-        
-    }
-    if(!rightClickedDiv.classList.contains("resizer")) {
-        rightClickedDiv.remove()
-    }
-    
-    recalculateChairs()
-    savePositions()
-    event.preventDefault();
-    return false;
+  recalculateChairs();
+  savePositions();
+  event.preventDefault();
+  return false;
 }
 
 // Retire les EventListener lorsqu'on arrête de rester appuyer sur la souris
@@ -281,31 +273,27 @@ listeNoms.addEventListener("input", ajouterNomAListe);
 function ajouterNomAListe() {
   listeDesNoms = [];
 
-//   Bugfix pour chrome qui met la première ligne de la textarea pas dans une div merci chrome
-// pas trop le temps de comprendre ça pr l'instant
-    listeNoms.childNodes.forEach((node) => {
-        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
-            // Si le nœud est un texte et non vide, l'ajoute à la liste
-            listeDesNoms.push(node.textContent.trim());
-        }
-    });
-// Mais ca marche
+  //   Bugfix pour chrome qui met la première ligne de la textarea pas dans une div merci chrome
+  // pas trop le temps de comprendre ça pr l'instant
+  listeNoms.childNodes.forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+      // Si le nœud est un texte et non vide, l'ajoute à la liste
+      listeDesNoms.push(node.textContent.trim());
+    }
+  });
+  // Mais ca marche
 
+  listeNoms.querySelectorAll("div").forEach((nom) => {
+    listeDesNoms.push(nom.textContent.trim());
+  });
 
-    listeNoms.querySelectorAll("div").forEach((nom) => {
-        listeDesNoms.push(nom.textContent.trim()) 
-    })
+  listeSansVide = removeEmptyElementsFromArray(listeDesNoms);
 
+  window.localStorage.setItem("listeNoms", listeNoms.innerHTML);
+  // console.log(listeNoms);
 
-    listeSansVide = removeEmptyElementsFromArray(listeDesNoms)
-
-    window.localStorage.setItem("listeNoms", listeNoms.innerHTML)
-    // console.log(listeNoms);
-    
-
-    updateChairCount()
-    // console.log(listeDesNoms);
-    
+  updateChairCount();
+  // console.log(listeDesNoms);
 }
 
 shuffleButton.addEventListener("click", handleClickShuffle);
@@ -321,7 +309,7 @@ function handleClickShuffle() {
 
 // Methode Fisher Yates
 function shuffleArray(array) {
-//   console.log("Shuffling...");
+  //   console.log("Shuffling...");
 
   const newArray = array;
 
@@ -368,10 +356,12 @@ function recalculateChairs() {
 }
 
 function updateChairCount() {
-    let chairCount = document.querySelector("#chairCount")
-    // console.log("writing");
-    
-    chairCount.textContent = `${listeSansVide.length} / ${listeChaise.length || "0"}`
+  let chairCount = document.querySelector("#chairCount");
+  // console.log("writing");
+
+  chairCount.textContent = `${listeSansVide.length} / ${
+    listeChaise.length || "0"
+  }`;
 }
 
 // Fonction attribuer noms aux chaises
@@ -394,113 +384,103 @@ function assignNamesToChairs(listeNoms) {
     const existingPapiers = element.querySelectorAll(".papier");
     existingPapiers.forEach((papier) => papier.remove());
 
+    const nameInChair = document.createElement("p");
+    nameInChair.classList = "papier h-8 p-2 w-fit";
+    nameInChair.innerText = listeNoms[index];
 
-        const nameInChair = document.createElement("p")
-        nameInChair.classList = "papier h-8 p-2 w-fit"
-        nameInChair.innerText = listeNoms[index]
-        
-
-
-        element.appendChild(nameInChair);  
-
-    });
-
+    element.appendChild(nameInChair);
+  });
 }
 
-
 // ........................ FONCTION LOCALSTORAGE ........................
-initLocalStorage()
-
+initLocalStorage();
 
 // fonction qui se lance au démarrage
 async function initLocalStorage() {
-    let listeNomsLS, listeChaisesLS, listeTablesLS
+  let listeNomsLS, listeChaisesLS, listeTablesLS;
 
-// Pour la liste des noms
-    await window.localStorage.getItem("listeNoms")
-    listeNomsLS = window.localStorage.getItem("listeNoms")
-    if (!listeNomsLS) {return}
-    listeNoms.innerHTML = listeNomsLS  
-    ajouterNomAListe()
+  // Pour la liste des noms
+  await window.localStorage.getItem("listeNoms");
+  listeNomsLS = window.localStorage.getItem("listeNoms");
+  if (!listeNomsLS) {
+    return;
+  }
+  listeNoms.innerHTML = listeNomsLS;
+  ajouterNomAListe();
 
-// Pour les tables et chaises
-    restorePositions()
-    recalculateChairs()
-
-
+  // Pour les tables et chaises
+  restorePositions();
+  recalculateChairs();
 }
 
-
 function savePositions() {
-    const allChairs = Array.from(document.querySelectorAll(".chair"));
-    const allTables = Array.from(document.querySelectorAll(".table"));
+  const allChairs = Array.from(document.querySelectorAll(".chair"));
+  const allTables = Array.from(document.querySelectorAll(".table"));
 
-    const chairData = allChairs.map(chair => {
-        const computedStyle = window.getComputedStyle(chair);
-        return {
-            left: chair.style.left,
-            top: chair.style.top,
-            width: computedStyle.width,
-            height: computedStyle.height,
-        };
-    });
-    
-    const tableData = allTables.map(table => {
-        const computedStyle = window.getComputedStyle(table);
-        // console.log("width : " + computedStyle.width);
-        return {
-            left: table.style.left,
-            top: table.style.top,
-            width: computedStyle.width,
-            height: computedStyle.height,
-        };
-    });
+  const chairData = allChairs.map((chair) => {
+    const computedStyle = window.getComputedStyle(chair);
+    return {
+      left: chair.style.left,
+      top: chair.style.top,
+      width: computedStyle.width,
+      height: computedStyle.height,
+    };
+  });
 
-    window.localStorage.setItem("listeChaises", JSON.stringify(chairData));
-    window.localStorage.setItem("listeTables", JSON.stringify(tableData));
+  const tableData = allTables.map((table) => {
+    const computedStyle = window.getComputedStyle(table);
+    // console.log("width : " + computedStyle.width);
+    return {
+      left: table.style.left,
+      top: table.style.top,
+      width: computedStyle.width,
+      height: computedStyle.height,
+    };
+  });
+
+  window.localStorage.setItem("listeChaises", JSON.stringify(chairData));
+  window.localStorage.setItem("listeTables", JSON.stringify(tableData));
 }
 
 function restorePositions() {
+  let chairData = [],
+    tableData = [];
+  try {
+    chairData = JSON.parse(window.localStorage.getItem("listeChaises") || "[]");
+  } catch (e) {
+    console.error("Error parsing chair data:", e);
+  }
+  try {
+    tableData = JSON.parse(window.localStorage.getItem("listeTables") || "[]");
+  } catch (e) {
+    console.error("Error parsing table data:", e);
+  }
+  // console.log(chairData);
 
-  
-    let chairData = [], tableData = [];
-    try {
-        chairData = JSON.parse(window.localStorage.getItem("listeChaises") || "[]");
-    } catch (e) {
-        console.error("Error parsing chair data:", e);
-    }
-    try {
-        tableData = JSON.parse(window.localStorage.getItem("listeTables") || "[]"); 
-    } catch (e) {
-        console.error("Error parsing table data:", e);
-    }
-    // console.log(chairData);
-    
+  chairData.forEach((data) => {
+    carnet.appendChild(createChair(data));
+  });
 
-    chairData.forEach((data) => {
-        carnet.appendChild(createChair(data));
-    })
+  tableData.forEach((data) => {
+    const newTable = document.createElement("div");
+    newTable.classList = `table absolute border-black border-2`;
+    newTable.style.left = data.left;
+    newTable.style.top = data.top;
+    newTable.style.width = data.width;
+    newTable.style.height = data.height;
 
-    tableData.forEach(data => {
-        const newTable = document.createElement("div");
-        newTable.classList = `table absolute border-black border-2`;
-        newTable.style.left = data.left;
-        newTable.style.top = data.top;
-        newTable.style.width = data.width;
-        newTable.style.height = data.height;
+    newTable.addEventListener("mousedown", handleInitMove);
+    newTable.addEventListener("contextmenu", handleDeleteOnRClick);
 
-        newTable.addEventListener("mousedown", handleInitMove);
-        newTable.addEventListener("contextmenu", handleDeleteOnRClick);
+    const resizer = document.createElement("div");
+    resizer.classList =
+      "resizer w-[10px] h-[10px] bg-blue-500 absolute right-0 bottom-0";
 
-        const resizer = document.createElement("div");
-        resizer.classList =
-            "resizer w-[10px] h-[10px] bg-blue-500 absolute right-0 bottom-0";
+    resizer.addEventListener("mousedown", handleInitResize, false);
+    newTable.appendChild(resizer);
 
-        resizer.addEventListener("mousedown", handleInitResize, false);
-        newTable.appendChild(resizer);
-
-        carnet.appendChild(newTable);
-    });
+    carnet.appendChild(newTable);
+  });
 }
 
 // For safer localStorage handling
@@ -508,7 +488,7 @@ function safelyParseJSON(json, fallback = []) {
   try {
     return JSON.parse(json) || fallback;
   } catch (e) {
-    console.error('Failed to parse JSON:', e);
+    console.error("Failed to parse JSON:", e);
     return fallback;
   }
 }
@@ -518,7 +498,7 @@ function createChair(position = {}) {
   const newChair = document.createElement("div");
   newChair.style.backgroundImage = "url(./img/wood.jpg)";
   newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center`;
-  
+
   if (position.left) newChair.style.left = position.left;
   if (position.top) newChair.style.top = position.top;
 
@@ -529,11 +509,11 @@ function createChair(position = {}) {
 }
 
 function displayError(message) {
-  const errorDiv = document.createElement('div');
-  errorDiv.classList.add('error-message');
+  const errorDiv = document.createElement("div");
+  errorDiv.classList.add("error-message");
   errorDiv.textContent = message;
   document.body.appendChild(errorDiv);
-  
+
   setTimeout(() => {
     errorDiv.remove();
   }, 3000);
