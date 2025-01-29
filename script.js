@@ -52,18 +52,18 @@ function handleBookMarkOpen(event) {
   nameChange.classList.add("hidden");
 }
 
-// Plus utilisé ? TODO REMOVE
-let countTable = 0;
-let countChair = 0;
-function handleCountPlus(event) {
-  if (event.target == tablePlus) {
-    countTable++;
-    tableCount.innerHTML = countTable;
-  } else if (event.target == chairPlus) {
-    countChair++;
-    chairCount.innerHTML = countChair;
-  }
-}
+// // Plus utilisé ? TODO REMOVE
+// let countTable = 0;
+// let countChair = 0;
+// function handleCountPlus(event) {
+//   if (event.target == tablePlus) {
+//     countTable++;
+//     tableCount.innerHTML = countTable;
+//   } else if (event.target == chairPlus) {
+//     countChair++;
+//     chairCount.innerHTML = countChair;
+//   }
+// }
 
 function handleBoxShaking(event) {
   box.classList.add("boxShake");
@@ -86,8 +86,11 @@ const btnAddChair = document.querySelector(".btnAddChair");
 let currentMovingDiv, startX, startY, startWidth, startHeight, currentResize;
 let lastTableWidth = 128;
 let lastTableHeight = 64;
-// Offset x et Y pour bouger les divs en fonction de la souris
-const offset = [-30, -20];
+// Offset x et y pour bouger les divs en fonction de la souris
+const DRAG_OFFSET_X = -30;
+const DRAG_OFFSET_Y = -20;
+const offset = [DRAG_OFFSET_X, DRAG_OFFSET_Y];
+
 
 btnAddTable.addEventListener("click", handleClickAddTable);
 btnAddChair.addEventListener("click", handleClickAddChair);
@@ -96,17 +99,9 @@ btnAddChair.addEventListener("click", handleClickAddChair);
 function handleClickAddChair() {
 //   console.log("added chair");
 
-  // Crée la chaise avec classe prédéfinies
-  const newChair = document.createElement("div");
-  newChair.style.backgroundImage = "url(./img/wood.jpg)";
-  newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center `;
 
-  newChair.addEventListener("mousedown", handleInitMove);
-  newChair.addEventListener("contextmenu", handleDeleteOnRClick);
-
-
-  // Ajoute la chaise dans la div carnet
-  carnet.appendChild(newChair);
+  // Ajoute une nouvelle chaise dans la div carnet
+  carnet.appendChild(createChair());
   recalculateChairs();
   savePositions()
 }
@@ -250,7 +245,7 @@ function handleDeleteOnRClick(event) {
 
     if(rightClickedDiv.classList.contains("papier")) {
         rightClickedDiv = rightClickedDiv.parentElement
-        console.log(rightClickedDiv);
+        // console.log(rightClickedDiv);
         
     }
     if(!rightClickedDiv.classList.contains("resizer")) {
@@ -343,7 +338,7 @@ function shuffleArray(array) {
 // Prend une liste array et ajoute chacun de ses trucs dans l'HTML a l'endroit placeToAdd
 // TODO , REMPLACER PAR CREER DIVS POUR CHAQUE BOUTON
 function showList(array, placeToAdd) {
-  console.log("Showing list...");
+  // console.log("Showing list...");
 
   array.forEach((element) => {
     const newDiv = document.createElement("p");
@@ -452,7 +447,7 @@ function savePositions() {
     
     const tableData = allTables.map(table => {
         const computedStyle = window.getComputedStyle(table);
-        console.log("width : " + computedStyle.width);
+        // console.log("width : " + computedStyle.width);
         return {
             left: table.style.left,
             top: table.style.top,
@@ -466,24 +461,25 @@ function savePositions() {
 }
 
 function restorePositions() {
-    const chairData = JSON.parse(window.localStorage.getItem("listeChaises") || "[]");
-    const tableData = JSON.parse(window.localStorage.getItem("listeTables") || "[]");
-    console.log(chairData);
+
+  
+    let chairData = [], tableData = [];
+    try {
+        chairData = JSON.parse(window.localStorage.getItem("listeChaises") || "[]");
+    } catch (e) {
+        console.error("Error parsing chair data:", e);
+    }
+    try {
+        tableData = JSON.parse(window.localStorage.getItem("listeTables") || "[]"); 
+    } catch (e) {
+        console.error("Error parsing table data:", e);
+    }
+    // console.log(chairData);
     
 
-    chairData.forEach((data => {
-        const newChair = document.createElement("div");
-        newChair.style.backgroundImage = "url(./img/wood.jpg)";
-
-        newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center `;;
-        newChair.style.left = data.left;
-        newChair.style.top = data.top;
-
-        newChair.addEventListener("mousedown", handleInitMove);
-        newChair.addEventListener("contextmenu", handleDeleteOnRClick);
-
-        carnet.appendChild(newChair);
-    }))
+    chairData.forEach((data) => {
+        carnet.appendChild(createChair(data));
+    })
 
     tableData.forEach(data => {
         const newTable = document.createElement("div");
@@ -505,4 +501,29 @@ function restorePositions() {
 
         carnet.appendChild(newTable);
     });
+}
+
+// For safer localStorage handling
+function safelyParseJSON(json, fallback = []) {
+  try {
+    return JSON.parse(json) || fallback;
+  } catch (e) {
+    console.error('Failed to parse JSON:', e);
+    return fallback;
+  }
+}
+
+// For creating chairs (reusable function)
+function createChair(position = {}) {
+  const newChair = document.createElement("div");
+  newChair.style.backgroundImage = "url(./img/wood.jpg)";
+  newChair.classList = `chair absolute w-16 h-16 border-black border-2 rounded-full top-[100px] flex justify-center items-center`;
+  
+  if (position.left) newChair.style.left = position.left;
+  if (position.top) newChair.style.top = position.top;
+
+  newChair.addEventListener("mousedown", handleInitMove);
+  newChair.addEventListener("contextmenu", handleDeleteOnRClick);
+
+  return newChair;
 }
