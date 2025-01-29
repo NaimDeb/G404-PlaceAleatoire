@@ -1,102 +1,169 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LeGrandEmplacement</title>
-    <link href="styles.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet" />
     <!-- Import CDN Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="script.js" defer></script>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Lacquer&display=swap"
-        rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Lacquer&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body class="bg-[--bg-main]">
+  <body class="bg-[--bg-main]">
     <header id="navbar">
-        <nav class="bg-[--btn-main] px-12 py-3 flex justify-between drop-shadow-lg border-b-[1px] border-[--bg-main]">
-            <h2 class="ml-4 text-2xl text-[--off-white]">LeGrandEmplacement</h2>
-            <img src="./img/parametres-cog.png" alt="Roue des paramètres" class="w-8">
-        </nav>
+      <nav
+        class="bg-[--btn-main] px-12 py-3 flex justify-between drop-shadow-lg border-b-[1px] border-[--bg-main]"
+      >
+        <h2 class="ml-4 text-2xl text-[--off-white]">LeGrandEmplacement</h2>
+        <img
+          src="./img/parametres-cog.png"
+          alt="Roue des paramètres"
+          class="w-8"
+        />
+      </nav>
     </header>
-    <section id="modal" class="bg-black w-[100vw] h-[94vh] bg-opacity-30 flex justify-center items-center">
-        <div class="bg-[--bg-main] w-[800px] h-[800px] absolute z-0 flex justify-center">
-            <img src="img/Intercalaires.png" alt="Intercalaires" class="absolute top-[-20px] select-none">
-            <div class="self-start mt-32">
-                <h1 class="text-3xl justify-self-center ">Bienvenue au Grand Emplacement</h1>
-                <ul class="mt-12 list-disc flex flex-col w-[40%] m-auto">
-                    <h2 class="text-2xl">Le fonctionnement est très simple:</h2>
-                    <li class="mt-12">Tu rentres les noms des élèves</li>
-                    <li class="mt-12">Tu choisis la disposition de la salle (clique gauche pour bouger, clique droit
-                        pour supprimer)</li>
-                    <li class="mt-12">Tu appuies sur la boîte (appuie sur Quick Place si tu es pressé)</li>
-                    <li class="mt-12">Tu laisse la magie opérer</li>
-                </ul>
-                <button id="start"
-                    class="flex justify-self-center mt-12 bg-[--btn-main] rounded-3xl text-3xl text-[--bg-main] px-4 py-4 hover:scale-110 transition ease-in-out">Commencer</button>
-            </div>
+    <section
+      id="modal"
+      class="bg-black w-[100vw] h-[94vh] bg-opacity-30 flex justify-center items-center"
+    >
+      <div
+        class="bg-[--bg-main] w-[800px] h-[800px] absolute z-0 flex justify-center"
+      >
+        <img
+          src="img/Intercalaires.png"
+          alt="Intercalaires"
+          class="absolute top-[-20px] select-none"
+        />
+        <div class="self-start mt-32">
+          <h1 class="text-3xl justify-self-center">
+            Bienvenue au Grand Emplacement
+          </h1>
+          <ul class="mt-12 list-disc flex flex-col w-[40%] m-auto">
+            <h2 class="text-2xl">Le fonctionnement est très simple:</h2>
+            <li class="mt-12">Tu rentres les noms des élèves</li>
+            <li class="mt-12">
+              Tu choisis la disposition de la salle (clique gauche pour bouger,
+              clique droit pour supprimer)
+            </li>
+            <li class="mt-12">
+              Tu appuies sur la boîte (appuie sur Quick Place si tu es pressé)
+            </li>
+            <li class="mt-12">Tu laisse la magie opérer</li>
+          </ul>
+          <button
+            id="start"
+            class="flex justify-self-center mt-12 bg-[--btn-main] rounded-3xl text-3xl text-[--bg-main] px-4 py-4 hover:scale-110 transition ease-in-out"
+          >
+            Commencer
+          </button>
         </div>
+      </div>
     </section>
-    <section id="fullPage" class=" w-[100vw] h-[94vh] justify-center items-center hidden overflow-hidden">
-        <div id="box" class="flex justify-center w-[800px]">
-            <img src="./img/Randomize.png" class="absolute top-14">
-            <a href="#" class="absolute top-72 z-0 ">
-                <img src="./img/boxFromTop.png" alt="Boite en carton vu de haut"
-                    class="w-[400px] hover:scale-110 transition ease-in-out" id="cartonOpen">
-            </a>
-            <button id="quickPlace"
-                class="flex z-10 mt-[500px] bg-[--btn-main] rounded-3xl text-3xl text-[--off-white] px-4 py-4 font-sans hover:scale-110 transition ease-in-out">Quick
-                Place</button>
+    <section
+      id="fullPage"
+      class="w-[100vw] h-[94vh] justify-center items-center hidden overflow-hidden"
+    >
+      <div id="box" class="flex justify-center w-[800px]">
+        <img src="./img/Randomize.png" class="absolute top-14" />
+        <a href="#" class="absolute top-72 z-0">
+          <img
+            src="./img/boxFromTop.png"
+            alt="Boite en carton vu de haut"
+            class="w-[400px] hover:scale-110 transition ease-in-out"
+            id="cartonOpen"
+          />
+        </a>
+        <button
+          id="quickPlace"
+          class="flex z-10 mt-[500px] bg-[--btn-main] rounded-3xl text-3xl text-[--off-white] px-4 py-4 font-sans hover:scale-110 transition ease-in-out"
+        >
+          Quick Place
+        </button>
+      </div>
 
-        </div>
+      <div
+        id="carnet"
+        class="bg-[--off-white] w-[800px] h-[800px] absolute z-1 flex justify-center"
+      >
+        <img
+          src="img/Intercalaires.png"
+          alt="Intercalaires"
+          class="absolute top-[-20px] pointer-events-none"
+        />
+      </div>
+      <div class="w-full flex justify-end px-32 items-start h-full">
+        <div
+          id="bookMark"
+          class="relative h-[150px] w-[50px] p-0 border-l-[150px] border-solid border-r-[150px] border-[--btn-main] border-b-[100px] border-b-transparent items-center justify-start flex flex-col text-[--off-white]"
+        >
+          <div id="nameChange" class="w-[500px] relative top-32 left-14">
+            <img src="./img/NameChange.png" alt="" />
+          </div>
+          <div
+            class="bookmarkContent flex-col justify-center items-center hidden"
+          >
+            <h2 class="text-3xl mt-5">Elèves</h2>
 
-        <div id="carnet" class="bg-[--off-white] w-[800px] h-[800px] absolute z-1 flex justify-center">
-            <img src="img/Intercalaires.png" alt="Intercalaires" class="absolute top-[-20px] pointer-events-none">
-        </div>
-        <div class="w-full flex justify-end px-32 items-start h-full">
-            <div id="bookMark"
-                class="relative h-[150px] w-[50px] p-0 border-l-[150px] border-solid border-r-[150px] border-[--btn-main] border-b-[100px] border-b-transparent items-center justify-start flex flex-col text-[--off-white] ">
-                <div id="nameChange" class="w-[500px] relative top-32 left-14">
-                    <img src="./img/NameChange.png" alt="">
-
-                </div>
-                <div class="bookmarkContent flex-col justify-center items-center hidden">
-                    <h2 class="text-3xl mt-5">Elèves</h2>
-
-                    <div class="listeNoms mt-6 w-[150px] h-[300px] border-[--bg-main] border-2 focus:outline-none"
-                        contenteditable="true" role="textbox" spellcheck="false">
-                    </div>
-                    <div id="nbrTables" class="flex items-center w-[210px] justify-center mt-12 gap-2">
-                        <p class="w-full text-xl">Nombre de Tables</p>
-                        <a href="#" class="w-[30px] h-[30px] flex items-center hover:scale-110 transition ease-in-out">
-                            <img src="./img/plus.png" alt="bouton moins" class="btnAddTable">
-                        </a>
-                    </div>
-                    <div id="tableCount" class="count w-[40px] h-[40px] border-2 text-2xl justify-center flex"></div>
-                    <div id="nbrChaises" class="flex items-center w-[210px] justify-center mt-12">
-                        <p class="w-full text-xl">Nombre de Chaises</p>
-                        <a href="#" class="w-[30px] h-[30px] flex items-center hover:scale-110 transition ease-in-out">
-                            <img src="./img/plus.png" alt="bouton moins" class="btnAddChair">
-                        </a>
-                    </div>
-                    <div id="chairCount" class="count w-[90px] h-[40px] border-2 text-2xl justify-center flex">
-                        0 / 0
-                    </div>
-                </div>
+            <div
+              class="listeNoms mt-6 w-[150px] h-[300px] border-[--bg-main] border-2 focus:outline-none"
+              contenteditable="true"
+              role="textbox"
+              spellcheck="false"
+            ></div>
+            <div
+              id="nbrTables"
+              class="flex items-center w-[210px] justify-center mt-12 gap-2"
+            >
+              <p class="w-full text-xl">Nombre de Tables</p>
+              <a
+                href="#"
+                class="w-[30px] h-[30px] flex items-center hover:scale-110 transition ease-in-out"
+              >
+                <img
+                  src="./img/plus.png"
+                  alt="bouton moins"
+                  class="btnAddTable"
+                />
+              </a>
             </div>
+            <div
+              id="tableCount"
+              class="count w-[40px] h-[40px] border-2 text-2xl justify-center flex"
+            ></div>
+            <div
+              id="nbrChaises"
+              class="flex items-center w-[210px] justify-center mt-12"
+            >
+              <p class="w-full text-xl">Nombre de Chaises</p>
+              <a
+                href="#"
+                class="w-[30px] h-[30px] flex items-center hover:scale-110 transition ease-in-out"
+              >
+                <img
+                  src="./img/plus.png"
+                  alt="bouton moins"
+                  class="btnAddChair"
+                />
+              </a>
+            </div>
+            <div
+              id="chairCount"
+              class="count w-[90px] h-[40px] border-2 text-2xl justify-center flex"
+            >
+              0 / 0
+            </div>
+          </div>
         </div>
-
+      </div>
     </section>
-
-
-
-
-
-</body>
-
+  </body>
 </html>

@@ -68,6 +68,10 @@ function handleBoxShaking(event) {
   setTimeout(() => {
     box.classList.remove("boxShake");
     box.src = "./img/boxFromTop.png";
+    if (listeSansVide.length > 0) {
+      shuffleArray(listeSansVide);
+      assignNamesToChairs(listeSansVide);
+    }
   }, "1000");
 }
 
@@ -237,7 +241,6 @@ function handleMouseMove(event) {
   currentMovingDiv.style.left = `${newLeft}px`;
   currentMovingDiv.style.top = `${newTop}px`;
 
-  //   Keep in localstorage
 }
 
 // Supprime la div lorsqu'on clique droit dessus
