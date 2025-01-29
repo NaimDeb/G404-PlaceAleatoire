@@ -127,6 +127,23 @@ function handleDragging(event) {
   let changedWidth = startWidth + event.clientX - startX;
   let changedHeight = startHeight + event.clientY - startY;
 
+  // Get current position of the div being resized
+  const rect = currentResize.getBoundingClientRect();
+  const leftPosition = rect.left - carnetValeurs.x;
+
+  // Prevent resizing beyond right boundary
+  if (leftPosition + changedWidth > carnetValeurs.width) {
+    changedWidth = carnetValeurs.width - leftPosition;
+  }
+  // Prevent resizing beyond bottom boundary
+  if (rect.top - carnetValeurs.y + changedHeight > carnetValeurs.height) {
+    changedHeight = carnetValeurs.height - (rect.top - carnetValeurs.y);
+  }
+
+  // Prevent negative sizes
+  changedWidth = Math.max(10, changedWidth); // Minimum width of 10px
+  changedHeight = Math.max(10, changedHeight); // Minimum height of 10px
+
   currentResize.style.width = changedWidth + "px";
   currentResize.style.height = changedHeight + "px";
 
@@ -190,49 +207,40 @@ function handleMouseMove(event) {
 
   // Changer la position de la div
 
-  // Use the stored offsets for positioning
+  // Utiliser les offsets pour positionner la div
   const offsetX = parseFloat(currentMovingDiv.dataset.offsetX);
   const offsetY = parseFloat(currentMovingDiv.dataset.offsetY);
 
-  currentMovingDiv.style.left = `${posMouseX - offsetX}px`;
-  currentMovingDiv.style.top = `${posMouseY - offsetY}px`;
+  let newLeft = posMouseX - offsetX;
+  let newTop = posMouseY - offsetY;
 
   let currentDivSize = currentMovingDiv.getBoundingClientRect();
 
-  // Preventing div from going out of bounds
-
-  // OOB Droite
-  if (posMouseX > carnetValeurs.width - currentDivSize.width / 2) {
-    currentMovingDiv.style.left = `${
-      carnetValeurs.width - currentDivSize.width
-    }px`;
-    //    console.log("oob");
+  // Vérification des bordures
+  // bordure gauche
+  if (newLeft < 0) {
+    newLeft = 0;
+  }
+  // bordure droite
+  if (newLeft + currentDivSize.width > carnetValeurs.width) {
+    newLeft = carnetValeurs.width - currentDivSize.width;
+  }
+  // bordure haute
+  if (newTop < 0) {
+    newTop = 0;
+  }
+  // bordure basse
+  if (newTop + currentDivSize.height > carnetValeurs.height) {
+    newTop = carnetValeurs.height - currentDivSize.height;
   }
 
-  // OOB Gauche
-  if (posMouseX - currentDivSize.width / 2 < 0) {
-    currentMovingDiv.style.left = `${0}px`;
-    //    console.log("oob");
-  }
-
-  // OOB bas
-  if (posMouseY > carnetValeurs.height - currentDivSize.height / 2) {
-    currentMovingDiv.style.top = `${
-      carnetValeurs.height - currentDivSize.height
-    }px`;
-    //    console.log("oob");
-  }
-
-  // OOB Haut
-  if (posMouseY - currentDivSize.height / 2 < 0) {
-    currentMovingDiv.style.top = `${0}px`;
-    //    console.log("oob");
-  }
+  currentMovingDiv.style.left = `${newLeft}px`;
+  currentMovingDiv.style.top = `${newTop}px`;
 
   //   Keep in localstorage
 }
 
-// Deletes div when right clicked
+// Supprime la div lorsqu'on clique droit dessus
 function handleDeleteOnRClick(event) {
   let rightClickedDiv = event.target;
 
