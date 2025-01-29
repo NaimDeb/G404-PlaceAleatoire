@@ -379,11 +379,11 @@ function updateChairCount() {
 function assignNamesToChairs(listeNoms) {
   // erreurs
   if (listeSansVide.length > listeChaise.length) {
-    alert("Il y'a plus de noms que de chaises ! rajoute des chaises");
+    displayError("Il y'a plus de noms que de chaises ! rajoute des chaises");
     return;
   }
   if (listeSansVide.length < listeChaise.length) {
-    alert(
+    displayError(
       "Il y'a plus de chaises que de noms ! rajoute des noms ou enlève des chaises"
     );
     return;
@@ -526,4 +526,15 @@ function createChair(position = {}) {
   newChair.addEventListener("contextmenu", handleDeleteOnRClick);
 
   return newChair;
+}
+
+function displayError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.classList.add('error-message');
+  errorDiv.textContent = message;
+  document.body.appendChild(errorDiv);
+  
+  setTimeout(() => {
+    errorDiv.remove();
+  }, 3000);
 }

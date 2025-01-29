@@ -83,3 +83,32 @@ nav {
     transform: translate(0, 0) rotate(0deg);
   }
 }
+
+
+.error-message {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 100px;
+  background-color: #f0e3d3;
+  border: 1px solid #9b7e5b;
+  color: #e25d5d;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  border-radius: 0 0 10px 10px;
+
+  animation: popDown 0.5s ease-in-out;
+}
+
+@keyframes popDown {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
